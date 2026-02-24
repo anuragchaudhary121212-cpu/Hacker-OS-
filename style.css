@@ -1,0 +1,72 @@
+// BOOT
+const bootLines=[
+  "Initializing system...",
+  "Loading hacker modules...",
+  "Connecting to Navodaya_Node...",
+  "Access Granted ✔",
+  "Welcome Anurag ☠️"
+];
+let b=0;
+const bootText=document.getElementById("bootText");
+
+const bootInt=setInterval(()=>{
+  bootText.innerHTML+=bootLines[b]+"\n";
+  b++;
+  if(b===bootLines.length){
+    clearInterval(bootInt);
+    setTimeout(()=>document.getElementById("boot").style.display="none",1000);
+  }
+},700);
+
+// TYPING
+const roles=["Hacker Mindset Student","Future Cyber Engineer","Code | Learn | Grow"];
+let i=0,j=0,del=false;
+function typing(){
+  const t=roles[i];
+  document.querySelector(".typing").innerText=t.substring(0,j);
+  if(!del && j<t.length) j++;
+  else if(del && j>0) j--;
+  else{ del=!del; if(!del) i=(i+1)%roles.length;}
+  setTimeout(typing,del?60:120);
+}
+typing();
+
+// MATRIX
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+const letters="101010HACKER";
+const size=14;
+const cols=canvas.width/size;
+const drops=Array.from({length:cols}).fill(1);
+
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#00ff9c";
+  ctx.font=size+"px monospace";
+  drops.forEach((y,i)=>{
+    const t=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(t,i*size,y*size);
+    if(y*size>canvas.height && Math.random()>0.975) drops[i]=0;
+    drops[i]++;
+  });
+}
+setInterval(draw,33);
+
+// TERMINAL
+const cmd=document.getElementById("cmd");
+const out=document.getElementById("cmd-output");
+cmd.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    const v=cmd.value.toLowerCase();
+    out.innerHTML+=`<p>> ${v}</p>`;
+    if(v==="help") out.innerHTML+="<p>about | skills | contact</p>";
+    else if(v==="about") out.innerHTML+="<p>Anurag | JNV Siddhartha Nagar</p>";
+    else if(v==="skills") out.innerHTML+="<p>HTML CSS JS Git Cyber</p>";
+    else if(v==="contact") out.innerHTML+="<p>Email: anuragchaudhary121212@gmail.com</p>";
+    else out.innerHTML+="<p>Command not found</p>";
+    cmd.value="";
+  }
+});
